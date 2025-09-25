@@ -65,8 +65,8 @@ def eval(args):
     data = concatenate_datasets([members, non_members])
     model = LLM(
         model = args.model_path,
-        tensor_parallel_size=2,
-        gpu_memory_utilization=0.9,
+        tensor_parallel_size=4,
+        gpu_memory_utilization=0.8,
     )
     tok = AutoTokenizer.from_pretrained(args.model_path)
     stop_token_ids = tok("<|im_end|>")["input_ids"]
@@ -75,7 +75,6 @@ def eval(args):
         max_tokens=1000,
         min_tokens=0,
         stop_token_ids=stop_token_ids,
-        temperature=0,
         logprobs=0
     )
     
@@ -112,7 +111,7 @@ def eval(args):
     sample_scores = token_probability_deviation(sample_pro)
     labels = [ex['label'] for ex in data_list]
     auc, tpr = get_metrics(sample_scores, labels)
-    print(f"Our new method: {auc:.4f}   TPR at 0.01 FPR: {tpr:.4f}")
+    print(f"Our method: {auc:.3f}   TPR at 0.01 FPR: {tpr:.3f}")
     
 def parser_args():
     parser = argparse.ArgumentParser()

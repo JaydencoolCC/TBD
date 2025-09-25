@@ -11,7 +11,6 @@ import trl
 class TrainingConfig:
     model_name: str = field(default="Qwen/Qwen2.5-32B-Instruct")
     block_size: int = field(default=32768)
-    train_size: Optional[float] = field(default=1)
     dagger: bool = field(default=False)
     def __post_init__(self):
         os.environ["WANDB_DISABLED"] = "true"
@@ -30,7 +29,7 @@ def train():
     
     dataset = load_dataset("simplescaling/s1K_tokenized")
     dataset = dataset['train']
-    train_test_split = dataset.train_test_split(train_size=config.train_size, seed=42, shuffle=True)
+    train_test_split = dataset.train_test_split(train_size=0.8, seed=42, shuffle=True)
     train_dataset = train_test_split['train']
     test_dataset =  train_test_split['test']
     print(f"train dataset: {len(train_dataset)} test_dataset: {len(test_dataset)}")

@@ -12,7 +12,6 @@ accelerate launch \
   --num_processes=${gpu_count} \
   train/sft.py \
   --deepspeed="train/deepspeed.json" \
-  --train_size=0.8 \
   --block_size=16384 \
   --per_device_train_batch_size=${micro_batch_size} \
   --per_device_eval_batch_size=${micro_batch_size} \
